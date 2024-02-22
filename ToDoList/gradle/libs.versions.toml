@@ -45,4 +45,3 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
