@@ -16,6 +16,9 @@ class SharedViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _allTasks = MutableStateFlow<List<ToDoTask>>(emptyList())
+
+    // This second variable without underscore will be publicly exposed to our
+    // composable where we are going to observe and get notified from our composable.
     val allTasks: StateFlow<List<ToDoTask>> = _allTasks
 
     fun fetchAllTasksAsync() {
