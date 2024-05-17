@@ -4,7 +4,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     kotlin("kapt")
-    id("com.google.dagger.hilt.android") version "2.41" apply false
+    id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
 }
 
@@ -33,24 +33,39 @@ android {
                 "proguard-rules.pro")
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        // Hardcoding version due to IDE IntelliSense bug with Version Catalogs.
+        // kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+
+        // Compose to Kotlin Compatibility Map
+        // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -65,9 +80,15 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.navigation.compose)
+
+    // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
     kapt(libs.room.compiler)
+
+    // Dagger Hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
 

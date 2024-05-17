@@ -19,16 +19,16 @@ interface ToDoDao {
     fun getSelectedTask(taskId: Int): Flow<ToDoTask>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addTask(toDoTask: ToDoTask)
+    fun addTask(toDoTask: ToDoTask)
 
     @Update
-    suspend fun updateTask(toDoTask: ToDoTask)
+    fun updateTask(toDoTask: ToDoTask)
 
     @Delete
-    suspend fun deleteTask(toDoTask: ToDoTask)
+    fun deleteTask(toDoTask: ToDoTask): Int
 
     @Query("DELETE FROM todo_table")
-    suspend fun deleteAllTasks()
+    fun deleteAllTasks(): Int
 
     @Query("SELECT * FROM todo_table WHERE title LIKE :searchQuery OR description LIKE :searchQuery")
     fun searchDatabase(searchQuery: String): Flow<List<ToDoTask>>
