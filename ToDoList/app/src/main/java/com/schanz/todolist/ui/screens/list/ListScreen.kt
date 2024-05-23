@@ -8,17 +8,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.schanz.todolist.R
+import com.schanz.todolist.ui.viewmodels.SharedViewModel
+import com.schanz.todolist.util.SearchAppBarState
 
 @Composable
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 fun ListScreen(
-    navigateToTaskScreen: (taskId: Int) -> Unit
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    sharedViewModel: SharedViewModel
 ) {
+    val searchAppBarState: SearchAppBarState = sharedViewModel.searchAppBarState
+    val searchTextState: String = sharedViewModel.searchTextState
+
     Scaffold(
         topBar = {
-            ListAppBar()
+            ListAppBar(
+                sharedViewModel = sharedViewModel,
+                searchAppBarState = searchAppBarState,
+                searchTextState = searchTextState
+            )
         },
         content = { paddingValues ->
             // TODO: Use paddingValues
@@ -43,10 +52,4 @@ fun ListFab(
             contentDescription = stringResource(R.string.add_button)
         )
     }
-}
-
-@Preview
-@Composable
-private fun ListScreenPreview() {
-    ListScreen(navigateToTaskScreen = {})
 }

@@ -26,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -38,17 +37,47 @@ import com.schanz.todolist.components.PriorityItem
 import com.schanz.todolist.data.models.Priority
 import com.schanz.todolist.ui.theme.LARGE_PADDING
 import com.schanz.todolist.ui.theme.TOP_APP_BAR_HEIGHT
+import com.schanz.todolist.ui.viewmodels.SharedViewModel
+import com.schanz.todolist.util.SearchAppBarState
 
 // Reference:
 // https://github.com/stevdza-san/To-Do-Compose/tree/Part-13-Course_Updates
 
 @Composable
-fun ListAppBar() {
-    DefaultListAppBar(
-        onSearchClickedLogic = {},
-        onSortClickedLogic = {},
-        onDeleteClickedLogic = {}
-    )
+fun ListAppBar(
+    sharedViewModel: SharedViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchTextState: String
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultListAppBar(
+                onSearchClickedLogic = {
+                    sharedViewModel.updateAppBarState(
+                        newState = SearchAppBarState.OPENED
+                    )
+                },
+                onSortClickedLogic = {},
+                onDeleteClickedLogic = {}
+            )
+        }
+
+        else -> {
+            SearchAppBar(
+                text = searchTextState,
+                onTextChangeLogic = { newText ->
+                    sharedViewModel.updateSearchText(newText = newText)
+                },
+                onExitSearchMode = {
+                    sharedViewModel.updateAppBarState(
+                        newState = SearchAppBarState.CLOSED
+                    )
+                    sharedViewModel.updateSearchText(newText = "")
+                },
+                onPerformSearch = {}
+            )
+        }
+    }
 }
 
 /**
@@ -185,9 +214,9 @@ fun DeleteAllAction(
 @Composable
 fun SearchAppBar(
     text: String,
-    onTextChange: (String) -> Unit,
-    onCloseClicked: () -> Unit,
-    onSearchClicked: (String) -> Unit
+    onTextChangeLogic: (String) -> Unit,
+    onExitSearchMode: () -> Unit,
+    onPerformSearch: (String) -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -199,7 +228,7 @@ fun SearchAppBar(
             modifier = Modifier.fillMaxWidth(),
             value = text,
             onValueChange = {
-                onTextChange(it)
+                onTextChangeLogic(it)
             },
             // The optional placeholder to be displayed when the text field
             // is in focus and the input text is empty.
@@ -208,7 +237,7 @@ fun SearchAppBar(
                     modifier = Modifier
                             .alpha(0.5f),
                     text = stringResource(R.string.search_hint),
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.secondary
                 )
             },
             textStyle = TextStyle(
@@ -232,9 +261,9 @@ fun SearchAppBar(
                 IconButton(
                     onClick = {
                         if (text.isNotEmpty()) {
-                            onTextChange("")
+                            onTextChangeLogic("")
                         } else {
-                            onCloseClicked()
+                            onExitSearchMode()
                         }
                     }
                 ) {
@@ -249,7 +278,7 @@ fun SearchAppBar(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    onSearchClicked(text)
+                    onPerformSearch(text)
                 }
             )
         )
@@ -271,8 +300,8 @@ private fun DefaultListAppBarPreview() {
 private fun SearchAppBarPreview() {
     SearchAppBar(
         text = "Search",
-        onTextChange = {},
-        onCloseClicked = {},
-        onSearchClicked = {}
+        onTextChangeLogic = {},
+        onExitSearchMode = {},
+        onPerformSearch = {}
     )
 }
