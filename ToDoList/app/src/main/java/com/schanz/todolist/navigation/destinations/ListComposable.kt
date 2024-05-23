@@ -8,7 +8,7 @@ import com.schanz.todolist.ui.screens.list.ListScreen
 import com.schanz.todolist.util.Constants
 
 fun NavGraphBuilder.listComposable(
-    navigateToTaskScreen: (Int) -> Unit
+    navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
     composable(
         route = Constants.LIST_SCREEN,

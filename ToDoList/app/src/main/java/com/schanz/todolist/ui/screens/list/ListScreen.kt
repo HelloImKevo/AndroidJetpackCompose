@@ -7,7 +7,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.schanz.todolist.R
@@ -15,7 +14,7 @@ import com.schanz.todolist.R
 @Composable
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 fun ListScreen(
-    navigateToTaskScreen: (Int) -> Unit
+    navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -32,7 +31,7 @@ fun ListScreen(
 
 @Composable
 fun ListFab(
-    onFabClicked: (Int) -> Unit
+    onFabClicked: (taskId: Int) -> Unit
 ) {
     FloatingActionButton(
         onClick = {
@@ -41,8 +40,7 @@ fun ListFab(
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = stringResource(R.string.add_button),
-            tint = Color.White
+            contentDescription = stringResource(R.string.add_button)
         )
     }
 }
