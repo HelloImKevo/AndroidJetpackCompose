@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.schanz.todolist.data.models.ToDoTask
 import com.schanz.todolist.data.repositories.ToDoRepository
+import com.schanz.todolist.util.Action
 import com.schanz.todolist.util.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +36,28 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getAllTasks.collect {
                 _allTasks.value = it
+            }
+        }
+    }
+
+    fun handleDatabaseActions(action: Action) {
+        when (action) {
+            Action.ADD -> {
+            }
+
+            Action.UPDATE -> {
+            }
+
+            Action.DELETE -> {
+            }
+
+            Action.DELETE_ALL -> {
+            }
+
+            Action.UNDO -> {
+            }
+
+            else -> {
             }
         }
     }
