@@ -25,17 +25,20 @@ import com.schanz.todolist.data.models.ToDoTask
 import com.schanz.todolist.ui.theme.LARGE_PADDING
 import com.schanz.todolist.ui.theme.PRIORITY_INDICATOR_SIZE
 import com.schanz.todolist.ui.theme.TASK_ITEM_ELEVATION
+import com.schanz.todolist.util.RequestState
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class)
 fun ListContent(
-    tasks: List<ToDoTask>,
+    tasks: RequestState<List<ToDoTask>>,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
-    if (tasks.isEmpty()) {
-        EmptyContent()
-    } else {
-        DisplayTasks(tasks = tasks, navigateToTaskScreen = navigateToTaskScreen)
+    if (tasks is RequestState.Success) {
+        if (tasks.data.isEmpty()) {
+            EmptyContent()
+        } else {
+            DisplayTasks(tasks = tasks.data, navigateToTaskScreen = navigateToTaskScreen)
+        }
     }
 }
 

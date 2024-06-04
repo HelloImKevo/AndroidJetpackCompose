@@ -13,7 +13,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import com.schanz.todolist.R
+import com.schanz.todolist.data.models.ToDoTask
 import com.schanz.todolist.ui.viewmodels.SharedViewModel
+import com.schanz.todolist.util.RequestState
 import com.schanz.todolist.util.SearchAppBarState
 
 @Composable
@@ -30,7 +32,7 @@ fun ListScreen(
         sharedViewModel.allTasks
     }
 
-    val allTasks by sharedViewModel.allTasks.collectAsState()
+    val allTasks: RequestState<List<ToDoTask>> by sharedViewModel.allTasks.collectAsState()
     val searchAppBarState: SearchAppBarState = sharedViewModel.searchAppBarState
     val searchTextState: String = sharedViewModel.searchTextState
 

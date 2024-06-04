@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.schanz.todolist.data.models.ToDoTask
 import com.schanz.todolist.data.repositories.ToDoRepository
 import com.schanz.todolist.util.Action
+import com.schanz.todolist.util.RequestState
 import com.schanz.todolist.util.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,17 +27,27 @@ class SharedViewModel @Inject constructor(
     var searchTextState by mutableStateOf("")
         private set
 
-    private val _allTasks = MutableStateFlow<List<ToDoTask>>(emptyList())
+    private val _allTasks = MutableStateFlow<RequestState<List<ToDoTask>>>(RequestState.Idle)
 
     // This second variable without underscore will be publicly exposed to our
     // composable where we are going to observe and get notified from our composable.
-    val allTasks: StateFlow<List<ToDoTask>> = _allTasks
+    val allTasks: StateFlow<RequestState<List<ToDoTask>>> = _allTasks
 
-    fun fetchAllTasksAsync() {
-        viewModelScope.launch {
-            repository.getAllTasks.collect {
-                _allTasks.value = it
+    init {
+        fetchAllTasksAsync()
+    }
+
+    private fun fetchAllTasksAsync() {
+        _allTasks.value = RequestState.Loading
+
+        try {
+            viewModelScope.launch {
+                repository.getAllTasks.collect {
+                    _allTasks.value = RequestState.Success(it)
+                }
             }
+        } catch (e: Exception) {
+            _allTasks.value = RequestState.Error(e)
         }
     }
 
