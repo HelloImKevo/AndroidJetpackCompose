@@ -9,8 +9,8 @@ import com.schanz.todolist.ui.viewmodels.SharedViewModel
 import com.schanz.todolist.util.Constants
 
 fun NavGraphBuilder.listComposable(
-    navigateToTaskScreen: (taskId: Int) -> Unit,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
     composable(
         route = Constants.LIST_SCREEN,
