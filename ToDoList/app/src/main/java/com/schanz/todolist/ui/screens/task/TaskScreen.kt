@@ -10,8 +10,8 @@ import com.schanz.todolist.util.Action
 @Composable
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 fun TaskScreen(
-    selectedTask: ToDoTask?,
     sharedViewModel: SharedViewModel,
+    selectedTask: ToDoTask?,
     navigateToListScreen: (Action) -> Unit
 ) {
     Scaffold(

@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.schanz.todolist.ui.screens.task.TaskScreen
 import com.schanz.todolist.ui.viewmodels.SharedViewModel
 import com.schanz.todolist.util.Action
 import com.schanz.todolist.util.Constants
@@ -23,5 +24,11 @@ fun NavGraphBuilder.taskComposable(
         val taskId = navBackStackEntry.arguments!!.getInt(Constants.TASK_ARGUMENT_KEY)
         LaunchedEffect(key1 = taskId) {
         }
+
+        TaskScreen(
+            sharedViewModel = sharedViewModel,
+            selectedTask = null,
+            navigateToListScreen = navigateToListScreen
+        )
     }
 }
