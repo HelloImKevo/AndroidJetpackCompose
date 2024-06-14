@@ -51,6 +51,17 @@ class SharedViewModel @Inject constructor(
         }
     }
 
+    private val _selectedTask: MutableStateFlow<ToDoTask?> = MutableStateFlow(null)
+    val selectedTask: StateFlow<ToDoTask?> = _selectedTask
+
+    fun getSelectedTask(taskId: Int) {
+        viewModelScope.launch {
+            repository.getSelectedTask(taskId = taskId).collect { task ->
+                _selectedTask.value = task
+            }
+        }
+    }
+
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> {
@@ -71,6 +82,10 @@ class SharedViewModel @Inject constructor(
             else -> {
             }
         }
+    }
+
+    fun updateTaskFields(selectedTask: ToDoTask?) {
+        // TODO: Store task properties in memory.
     }
 
     fun updateAppBarState(newState: SearchAppBarState) {
