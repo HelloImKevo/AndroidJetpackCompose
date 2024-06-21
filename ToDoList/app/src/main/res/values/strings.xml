@@ -14,4 +14,5 @@
     <string name="back_arrow_description">Back Arrow Icon</string>
     <string name="delete_icon_description">Delete Icon</string>
     <string name="update_icon_description">Update Icon</string>
+    <string name="drop_down_arrow_description">Drop Down Arrow Icon</string>
 </resources>
